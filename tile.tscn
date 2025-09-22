@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://s22gsr7pnl34"]
+
+[node name="ReferenceRect" type="ReferenceRect"]
+clip_contents = true
+offset_right = 32.0
+offset_bottom = 32.0
+border_color = Color(0.28466, 0.558437, 0.784867, 1)
+editor_only = false
