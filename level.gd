@@ -5,7 +5,20 @@ var tile_size = 32
 var tile_scene = preload("res://tile.tscn")
 var player_scene = preload("res://player.tscn")
 var player_position = Vector2(10, 10)
+var monster_scene = preload("res://monster.tscn")
+var monster_position = Vector2(randi_range(0, 60),randi_range(0, 32))
+
+var player_move_amount = 1
+var monster_move_amount = 1
+var player_pv = 10
+var monter_pv = 8 
+var player_pw = 2
+var monster_pw = 1
+
+var turn = "player"
+
 var player
+var monster
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -19,6 +32,10 @@ func _ready() -> void:
 	player = player_scene.instantiate()
 	player.position = player_position * tile_size
 	add_child(player)
+	
+	monster = monster_scene.instantiate()
+	monster.position = monster_position * tile_size
+	add_child(monster)
 
 func move_up(player_position):
 	if player_position.y > 0:
@@ -26,7 +43,7 @@ func move_up(player_position):
 	return(player_position)
 	
 func move_down(player_position):
-	if player_position.y < (screen_size.y / tile_size) - 1:
+	if player_position.y < (screen_size.y / tile_size) - 2:
 		player_position = Vector2(player_position.x, player_position.y + 1)
 	return(player_position)	
 	
@@ -44,16 +61,37 @@ func move_left(player_position):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	
-	if Input.is_action_just_pressed("ui_up"):
-		player_position = move_up(player_position)
-
-	if Input.is_action_just_pressed("ui_down"):
-		player_position = move_down(player_position)
-
-	if Input.is_action_just_pressed("ui_right"):
-		player_position = move_right(player_position)
-			
-	if Input.is_action_just_pressed("ui_left"):
-		player_position = move_left(player_position)
+	if turn == "player":
 	
+		if Input.is_action_just_pressed("ui_up"):
+			player_position = move_up(player_position)
+			turn = "monster"
+
+		if Input.is_action_just_pressed("ui_down"):
+			player_position = move_down(player_position)
+			turn = "monster"
+
+		if Input.is_action_just_pressed("ui_right"):
+			player_position = move_right(player_position)
+			turn = "monster"
+				
+		if Input.is_action_just_pressed("ui_left"):
+			player_position = move_left(player_position)
+			turn = "monster"
+			
+# Il faut tester la direction dans chaque coordonnée soit -1 soit 0 soit 1;
+# si la direction esyt négative il faut prendre la mx entre -1 etle monster direction et sinon le min entre 1 et le ponster direction
+			
+	if turn == "monster":
+		var monster_direction = Vector2(player_position.x - monster_position.x, player_position.y - monster_position.y)
+		var monster_direction_normalized = Vector2(min(1, monster_direction.x), min(1, monster_direction.y))
+		print(monster_direction_normalized)
+		monster_position = monster_position + monster_direction_normalized
+		turn = "player"
+	# Vecteur entre deux points =  xB - xA ; yB - yA
 	player.position = player_position * tile_size
+	monster.position = monster_position * tile_size
+	
+	
+	
+	

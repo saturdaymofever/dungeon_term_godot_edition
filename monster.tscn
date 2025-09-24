@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bkpoo84oshgud"]
+
+[sub_resource type="Gradient" id="Gradient_c5q2p"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(0.458622, 0.440475, 0.547884, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_s3gyj"]
+gradient = SubResource("Gradient_c5q2p")
+
+[node name="monster" type="Sprite2D"]
+position = Vector2(0, -2.86102e-06)
+scale = Vector2(0.125, 32)
+texture = SubResource("GradientTexture1D_s3gyj")
+centered = false
