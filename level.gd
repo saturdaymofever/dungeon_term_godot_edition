@@ -80,7 +80,7 @@ func _process(delta: float) -> void:
 			turn = "monster"
 			
 # Il faut tester la direction dans chaque coordonnée soit -1 soit 0 soit 1;
-# si la direction esyt négative il faut prendre la mx entre -1 etle monster direction et sinon le min entre 1 et le ponster direction
+# si la direction esyt négative il faut prendre la mx entre -1 etle monster direction et sinon le min entre 1 et le ponster direction see clamp !!!!
 			
 	if turn == "monster":
 		var monster_direction = Vector2(player_position.x - monster_position.x, player_position.y - monster_position.y)
