@@ -4,7 +4,7 @@ var screen_size = Vector2(1920, 1080)
 var tile_size = 32
 var tile_scene = preload("res://tile.tscn")
 var player_scene = preload("res://player.tscn")
-var player_position = Vector2(10, 10)
+var player_position = Vector2(59, 33)
 var monster_scene = preload("res://monster.tscn")
 var monster_position = Vector2(randi_range(0, 60),randi_range(0, 32))
 
@@ -37,27 +37,38 @@ func _ready() -> void:
 	monster.position = monster_position * tile_size
 	add_child(monster)
 
-func move_up(player_position):
+func move_up(player_position:Vector2) -> Vector2:
 	if player_position.y > 0:
 		player_position = Vector2(player_position.x, player_position.y - 1)
 	return(player_position)
 	
-func move_down(player_position):
+func move_down(player_position:Vector2) -> Vector2:
 	if player_position.y < (screen_size.y / tile_size) - 2:
 		player_position = Vector2(player_position.x, player_position.y + 1)
 	return(player_position)	
 	
-func move_right(player_position):
+func move_right(player_position:Vector2) -> Vector2:
 	if player_position.x < (screen_size.x / tile_size) - 1:
 		player_position = Vector2(player_position.x + 1, player_position.y)
 	return(player_position)
 	
-func move_left(player_position):
+func move_left(player_position:Vector2) -> Vector2:
 	if player_position.x  > 0:
 		player_position = Vector2(player_position.x - 1, player_position.y)
 	return(player_position)
 
+func normalize_value(x:int) -> int:
+	if x > 1:
+		return(1)
+	if x < -1:
+		return(-1)
+	return(x)
 
+func normalize_vector(vecteur:Vector2) -> Vector2:
+	return(Vector2(normalize_value(vecteur.x), normalize_value(vecteur.y)))
+	
+	
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	
@@ -84,13 +95,16 @@ func _process(delta: float) -> void:
 			
 	if turn == "monster":
 		var monster_direction = Vector2(player_position.x - monster_position.x, player_position.y - monster_position.y)
-		var monster_direction_normalized = Vector2(min(1, monster_direction.x), min(1, monster_direction.y))
+		var monster_direction_normalized = normalize_vector(monster_direction)
 		print(monster_direction_normalized)
+		print(monster_direction)
 		monster_position = monster_position + monster_direction_normalized
 		turn = "player"
 	# Vecteur entre deux points =  xB - xA ; yB - yA
 	player.position = player_position * tile_size
 	monster.position = monster_position * tile_size
+
+
 	
 	
 	
